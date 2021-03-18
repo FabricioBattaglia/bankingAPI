@@ -11,7 +11,7 @@ const SECRET_KEY = "CHAVE SECRETA"
 const VALID_DAYS_AMOUT = 7
 
 type MyCustomClaims struct {
-	Account int `json:"account"`
+	Account int64 `json:"account"`
 	jwt.StandardClaims
 }
 
@@ -19,7 +19,7 @@ func GetPrivateKey() []byte {
 	return []byte(SECRET_KEY)
 }
 
-func GenerateJWT(account int) (string, error) {
+func GenerateJWT(account int64) (string, error) {
 	claims := MyCustomClaims{
 		account,
 		jwt.StandardClaims{

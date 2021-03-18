@@ -81,7 +81,7 @@ type listTransferRequest struct {
 }
 
 func (server *Server) listTransfers(ctx *gin.Context) {
-	AccountOriginID, err := ValidateToken(ctx)
+	AccountID, err := ValidateToken(ctx)
 	if err != nil {
 		ctx.JSON(http.StatusForbidden, errorResponse(err))
 		return
@@ -93,8 +93,10 @@ func (server *Server) listTransfers(ctx *gin.Context) {
 		return
 	}
 	arg := db.ListTransfersParam{
-		Limit:  req.PageSize,
-		Offset: (req.PageID - 1) * req.PageSize,
+		AccountOriginId:      AccountID,
+		AccountDestinationId: AccountID,
+		Limit:                req.PageSize,
+		Offset:               (req.PageID - 1) * req.PageSize,
 	}
 	transfers, err := server.store.ListTransfers(ctx, arg)
 	if err != nil {

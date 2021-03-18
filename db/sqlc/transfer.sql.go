@@ -81,7 +81,7 @@ func (q *Queries) ListTransfers(ctx context.Context, arg ListTransfersParam) ([]
 		return nil, err
 	}
 	defer rows.Close()
-	items := []Transfer{}
+	transfers := []Transfer{}
 	for rows.Next() {
 		var i Transfer
 		if err := rows.Scan(
@@ -93,7 +93,7 @@ func (q *Queries) ListTransfers(ctx context.Context, arg ListTransfersParam) ([]
 		); err != nil {
 			return nil, err
 		}
-		items = append(items, i)
+		transfers = append(transfers, i)
 	}
 	if err := rows.Close(); err != nil {
 		return nil, err
@@ -101,5 +101,5 @@ func (q *Queries) ListTransfers(ctx context.Context, arg ListTransfersParam) ([]
 	if err := rows.Err(); err != nil {
 		return nil, err
 	}
-	return items, nil
+	return transfers, nil
 }

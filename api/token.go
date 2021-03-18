@@ -9,7 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func ValidateToken(ctx *gin.Context) (int, error) {
+func ValidateToken(ctx *gin.Context) (int64, error) {
 	auth := ctx.Request.Header.Get("Authorization")
 	if auth == "" {
 		return 0, errors.New("no Authorization header provided")

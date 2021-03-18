@@ -38,7 +38,7 @@ func (server *Server) login(ctx *gin.Context) {
 		ctx.JSON(http.StatusUnauthorized, errorResponse(err))
 	}
 
-	jwt, err := token.GenerateJWT(int(account.ID))
+	jwt, err := token.GenerateJWT(int64(account.ID))
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
