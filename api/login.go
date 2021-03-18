@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"net/http"
 
-	"github.com/dgrijalva/jwt-go"
+	"github.com/FabricioBattaglia/bankingAPI/token"
 
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
@@ -38,11 +38,11 @@ func (server *Server) login(ctx *gin.Context) {
 		ctx.JSON(http.StatusUnauthorized, errorResponse(err))
 	}
 
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &jwt.MapClaims{"account": account.ID})
-	jsonwebtoken, err := token.SignedString([]byte("CHAVE_SECRETA"))
+	jwt, err := token.GenerateJWT(int(account.ID))
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"token": jsonwebtoken})
+
+	ctx.JSON(http.StatusOK, gin.H{"token": jwt})
 }

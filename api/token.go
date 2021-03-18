@@ -1,36 +1,29 @@
 package api
 
 import (
-	"net/http"
+	"errors"
 	"strings"
 
-	"github.com/dgrijalva/jwt-go"
+	jwtToken "github.com/FabricioBattaglia/bankingAPI/token"
+
 	"github.com/gin-gonic/gin"
 )
 
-type MyCustomClaims struct {
-	account string `json:"account"`
-	jwt.StandardClaims
-}
-
-func ValidateToken(ctx *gin.Context) *jwt.Token {
+func ValidateToken(ctx *gin.Context) (int, error) {
 	auth := ctx.Request.Header.Get("Authorization")
 	if auth == "" {
-		ctx.JSON(http.StatusForbidden, gin.H{"message": "No Authorization header provided"})
-		return nil
+		return 0, errors.New("no Authorization header provided")
 	}
 
 	token := strings.TrimPrefix(auth, "Bearer ")
 	if token == auth {
-		ctx.JSON(http.StatusForbidden, gin.H{"message": "No Authorization header provided"})
-		return nil
+		return 0, errors.New("no Authorization header provided")
 	}
 
-	authData, err := jwt.ParseWithClaims(token, &MyCustomClaims{}, func(jsonwebtoken *jwt.Token) (interface{}, error) { return []byte("CHAVE_SECRETA"), nil })
+	claims, err := jwtToken.ParseJWT(token)
 	if err != nil {
-		ctx.JSON(http.StatusForbidden, errorResponse(err))
-		return nil
+		return 0, err
 	}
 
-	return authData
+	return claims.Account, nil
 }
