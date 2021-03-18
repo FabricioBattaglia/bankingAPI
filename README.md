@@ -30,7 +30,7 @@ Golang API that deals with common banking routines
 
 ### Docker:
 
-* Check if Docker is present: docker -v
+* Check if Docker is present: `docker -v`
 
 * If it returns a version for Docker, Docker is installed.
 
@@ -38,17 +38,17 @@ Golang API that deals with common banking routines
 
 ### Postgres:
 
-* Now we need to get Postgres image into Docker, run: docker pull postgres:latest
+* Now we need to get Postgres image into Docker, run: `docker pull postgres:latest`
 
 * With the image that we just pulled we can create a container. There is a MakeFile that shortens the command for us.
 
-* Run: make postgres
+* Run: `make postgres`
 
-* After creating the container now we need to create the Database. Run: make createdb (dropdb to remove the database)
+* After creating the container now we need to create the Database. Run: `make createdb` (dropdb to remove the database)
 
-* To perform our migrations, run: make migrateup
+* To perform our migrations, run: `make migrateup`
 
-* Finally, we can start the server by running: make server
+* Finally, we can start the server by running: `make server`
 
 #### The API should be running
 
