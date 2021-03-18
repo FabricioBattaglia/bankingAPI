@@ -1,2 +1,0 @@
-# bankingAPI
-banking API
