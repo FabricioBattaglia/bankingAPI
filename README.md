@@ -62,7 +62,7 @@ We need to configure our routes in Insomnia:
 
 #### We need to specify the URL and the JSON:
 
-* URL: http://localhost:8080/accounts
+* URL: `http://localhost:8080/accounts`
 
 The JSON will have 3 fields:
 
