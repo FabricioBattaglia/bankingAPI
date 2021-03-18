@@ -4,7 +4,8 @@ CREATE TABLE "accounts" (
   "cpf" varchar NOT NULL,
   "secret" varchar NOT NULL,
   "balance" bigint,
-  "created_at" timestamptz NOT NULL DEFAULT (now())
+  "created_at" timestamptz NOT NULL DEFAULT (now()),
+  UNIQUE(cpf)
 );
 
 CREATE TABLE "transfers" (

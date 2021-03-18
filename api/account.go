@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"net/http"
 
+	"golang.org/x/crypto/bcrypt"
+
 	db "github.com/FabricioBattaglia/bankingAPI/db/sqlc"
 	"github.com/gin-gonic/gin"
 )
@@ -22,10 +24,17 @@ func (server *Server) createAccount(ctx *gin.Context) {
 		return
 	}
 
+	hashsecret, err := bcrypt.GenerateFromPassword([]byte(req.Secret), bcrypt.DefaultCost)
+
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+
 	arg := db.CreateAccountParams{
 		Name:    req.Name,
 		Cpf:     req.Cpf,
-		Secret:  req.Secret,
+		Secret:  string(hashsecret),
 		Balance: 1000,
 	}
 
@@ -60,7 +69,7 @@ func (server *Server) getAccount(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, account.Balance)
+	ctx.JSON(http.StatusOK, account)
 }
 
 //get list account handler

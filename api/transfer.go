@@ -2,6 +2,9 @@ package api
 
 import (
 	"database/sql"
+	"fmt"
+
+	//"github.com/FabricioBattaglia/bankingAPI/api"
 	//"fmt"
 	"net/http"
 
@@ -17,6 +20,16 @@ type createTransferRequest struct {
 
 //create transfer handler
 func (server *Server) createTransfer(ctx *gin.Context) {
+	tokenContent := ValidateToken(ctx)
+
+	if claims, ok := tokenContent.Claims.(*MyCustomClaims); ok && tokenContent.Valid {
+		fmt.Printf("%v %v", claims.account, claims.StandardClaims.ExpiresAt)
+		fmt.Println(claims.account)
+	}
+
+	fmt.Println(tokenContent.Claims)
+
+	fmt.Printf("create_transfer:start\n")
 	var req createTransferRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, errorResponse(err))
@@ -43,6 +56,7 @@ func (server *Server) createTransfer(ctx *gin.Context) {
 		return
 	}
 
+	fmt.Printf("create_transfer:end\n")
 	ctx.JSON(http.StatusOK, result)
 }
 

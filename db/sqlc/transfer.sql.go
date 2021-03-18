@@ -10,10 +10,10 @@ const createTransfer = `-- name: CreateTransfer :one
 INSERT INTO transfers (
     account_origin_id,
     account_destination_id,
-    amount,
+    amount
 ) VALUES (
     $1,$2,$3
-) RETURNIN id, account_origin_id, account_destination_id, amount, created_at
+) RETURNING id, account_origin_id, account_destination_id, amount, created_at;
 `
 
 type CreateTransferParam struct {

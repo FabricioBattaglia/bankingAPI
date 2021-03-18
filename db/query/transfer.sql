@@ -2,7 +2,7 @@
 INSERT INTO transfers (
     account_origin_id,
     account_destination_id,
-    amount,
+    amount
 ) VALUES (
     $1,$2,$3
 ) RETURNING *;

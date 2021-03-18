@@ -15,7 +15,7 @@ RETURNING id, name, cpf, secret, balance, created_at
 
 type AddAccountBalanceParams struct {
 	Amount int64 `json:"amount"`
-	ID     int64 `json:id`
+	ID     int64 `json:"id"`
 }
 
 func (q *Queries) AddAccountBalance(ctx context.Context, arg AddAccountBalanceParams) (Account, error) {
@@ -81,6 +81,25 @@ WHERE id = $1 LIMIT 1
 
 func (q *Queries) GetAccount(ctx context.Context, id int64) (Account, error) {
 	row := q.db.QueryRowContext(ctx, getAccount, id)
+	var i Account
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.Cpf,
+		&i.Secret,
+		&i.Balance,
+		&i.CreatedAt,
+	)
+	return i, err
+}
+
+const getAccountByCpf = `-- name: GetAccountByCpf :one
+SELECT id, name, cpf, secret, balance, created_at FROM accounts
+WHERE cpf = $1 LIMIT 1
+`
+
+func (q *Queries) GetAccountByCpf(ctx context.Context, cpf string) (Account, error) {
+	row := q.db.QueryRowContext(ctx, getAccountByCpf, cpf)
 	var i Account
 	err := row.Scan(
 		&i.ID,
