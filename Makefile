@@ -7,6 +7,9 @@ createdb:
 dropdb:
 	docker exec -it postgres12 dropdb dbname
 
+psql:
+	docker exec -it postgres12 psql -U root dbname
+
 migrateup:
 	migrate -path db/migration -database "postgresql://root:secret@localhost:5432/dbname?sslmode=disable" -verbose up
 
@@ -16,4 +19,10 @@ migratedown:
 sqlc:
 	sqlc generate
 
-.PHONY: postgres createdb dropdb migrateup migratedown sqlc
+test:
+	go test -v -cover ./...
+
+server:
+	go run main.go
+
+.PHONY: postgres createdb dropdb psql migrateup migratedown sqlc test server

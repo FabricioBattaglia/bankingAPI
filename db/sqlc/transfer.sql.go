@@ -2,9 +2,8 @@ package db
 
 import (
 	"context"
-	"math/big"
-
-	"github.com/google/uuid"
+	//"math/big"
+	//"github.com/google/uuid"
 )
 
 const createTransfer = `-- name: CreateTransfer :one
@@ -18,13 +17,13 @@ INSERT INTO transfers (
 `
 
 type CreateTransferParam struct {
-	AccountOriginId      uuid.UUID `json:"account_origin_id"`
-	AccountDestinationId uuid.UUID `json:"account_destination_id"`
-	Amount               big.Float `json:"amount"`
+	AccountOriginID      int64 `json:"account_origin_id"`
+	AccountDestinationID int64 `json:"account_destination_id"`
+	Amount               int64 `json:"amount"`
 }
 
 func (q *Queries) CreateTransfer(ctx context.Context, arg CreateTransferParam) (Transfer, error) {
-	row := q.db.QueryRowContext(ctx, createTransfer, arg.AccountOriginId, arg.AccountDestinationId, arg.Amount)
+	row := q.db.QueryRowContext(ctx, createTransfer, arg.AccountOriginID, arg.AccountDestinationID, arg.Amount)
 	var i Transfer
 	err := row.Scan(
 		&i.ID,
@@ -41,7 +40,7 @@ SELECT id, account_origin_id, account_destination_id, amount, created_at FROM tr
 WHERE id = $1 LIMIT 1
 `
 
-func (q *Queries) GetTransfer(ctx context.Context, id uuid.UUID) (Transfer, error) {
+func (q *Queries) GetTransfer(ctx context.Context, id int64) (Transfer, error) {
 	row := q.db.QueryRowContext(ctx, getTransfer, id)
 	var i Transfer
 	err := row.Scan(
@@ -65,10 +64,10 @@ OFFSET $4
 `
 
 type ListTransfersParam struct {
-	AccountOriginId      uuid.UUID `json:"account_origin_id"`
-	AccountDestinationId uuid.UUID `json:"account_destination_id"`
-	Limit                int32     `json:"limit"`
-	Offset               int32     `json:"offset"`
+	AccountOriginId      int64 `json:"account_origin_id"`
+	AccountDestinationId int64 `json:"account_destination_id"`
+	Limit                int32 `json:"limit"`
+	Offset               int32 `json:"offset"`
 }
 
 func (q *Queries) ListTransfers(ctx context.Context, arg ListTransfersParam) ([]Transfer, error) {
