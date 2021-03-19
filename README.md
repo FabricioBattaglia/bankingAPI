@@ -28,6 +28,14 @@ Golang API that deals with common banking routines
 
 ## How to run
 
+### Go:
+
+* Check if Go is installed: `go version`
+
+* If it returns a version for Go, Go is installed.
+
+* If Go is not installed, follow the [documentation](https://golang.org/doc/install) to install Go
+
 ### Docker:
 
 * Check if Docker is present: `docker -v`
