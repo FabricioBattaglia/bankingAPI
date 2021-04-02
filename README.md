@@ -95,7 +95,7 @@ If we select page_id to be 1 and page_size to be 5, our URL would be:
 ### GET/accounts/{account_id}
 
 The only element of this is the URL, where you pass the account id. So lets say I want to retrieve information about account with ID = 2. My url would be
-`http://localhost:8080/accounts/8`
+`http://localhost:8080/accounts/2`
 
 ### POST/login
 
